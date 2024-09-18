@@ -1,5 +1,3 @@
-# api.py
-
 import os
 import sys
 from dotenv import load_dotenv
@@ -8,13 +6,17 @@ from groq import Groq
 # Load environment variables
 load_dotenv()
 
-# Initialize Groq client
-client = Groq(
-    api_key=os.environ.get("GROQ_API_KEY"),
-)
+# Function to initialize Groq client with optional API key
+def initialize_groq_client(api_key=None):
+    return Groq(
+        api_key=api_key if api_key else os.environ.get("GROQ_API_KEY"),
+    )
 
 # Function to generate README
-def generate_readme(source_file, generated_file="README.md"):
+def generate_readme(source_file, generated_file="README.md", api_key=None):
+    # Initialize Groq client
+    client = initialize_groq_client(api_key)
+
     try:
         with open(source_file, 'r') as f:
             source_content = f.read()
