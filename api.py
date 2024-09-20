@@ -13,7 +13,7 @@ def initialize_groq_client(api_key=None):
     )
 
 # Function to generate README
-def generate_readme(source_file, generated_file="README.md", api_key=None):
+def generate_readme(source_file, generated_file="README.md", api_key=None, token=None):
     # Initialize Groq client
     client = initialize_groq_client(api_key)
 
@@ -36,6 +36,15 @@ def generate_readme(source_file, generated_file="README.md", api_key=None):
             model="llama3-8b-8192",
         )
         readme_content = chat_completion.choices[0].message.content
+        
+
+        # Check if token usage should be displayed
+        if token:
+            usage = chat_completion.usage
+            print(f"Token usage:")
+            print(f"  Total tokens: {usage.total_tokens}")
+            print(f"  Prompt tokens: {usage.prompt_tokens}")
+            print(f"  Completion tokens: {usage.completion_tokens}")
 
         # Print the generated file to CLI, when no file name is mentioned to write
         if generated_file == "cli_print":

@@ -20,6 +20,10 @@ def main():
     # Accepting multiple files
     parser.add_argument('files', metavar='file', type=str, nargs='*', help='Source file(s) to generate README for')
     
+    # Viewing token usage
+    parser.add_argument('--token', '-t', action='store_true', help="Display token usage after generating README")
+
+    
     args = parser.parse_args()
 
     # Check for version flag before anything else
@@ -39,13 +43,13 @@ def main():
         for file in args.files:
             print(f"Processing file: {file}", file=sys.stderr)
             output_file = f"{os.path.splitext(file)[0]}_README.md"
-            generate_readme(file, output_file, api_key=args.api_key)
+            generate_readme(file, output_file, api_key=args.api_key, token=args.token)
     else:
         # If multi-file flag is not set, generate a single README file or append to output file
         if args.output == "cli_print":
             for file in args.files:
                 print(f"Processing file: {file}", file=sys.stderr)
-                generate_readme(file, "cli_print", api_key=args.api_key)
+                generate_readme(file, "cli_print", api_key=args.api_key, token=args.token)
         else:
             # Append content to the specified output file for multiple files
             with open(args.output, 'w') as output_file:
@@ -53,7 +57,7 @@ def main():
                     print(f"Processing file: {file}", file=sys.stderr)
                     # Write or append to the output file
                     output_file.write(f"# README for {file}\n\n")
-                    generate_readme(file, args.output, api_key=args.api_key)
+                    generate_readme(file, args.output, api_key=args.api_key, token=args.token)
 
 if __name__ == "__main__":
     main()

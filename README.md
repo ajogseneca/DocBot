@@ -24,6 +24,7 @@ This tool generates a README description for a given code snippet using the Groq
 * Option to generate a separate README file for each input file
 * Option to output the generated README file to a specified file or to the console
 * Supports API key authentication for Groq AI
+* Option to outpout token usage
 
 **Getting Started**
 
@@ -33,6 +34,7 @@ This tool generates a README description for a given code snippet using the Groq
 	* `--output` or `-o`: Specify the output file (default: stdout)
 	* `--api-key`: Specify the API key for Groq AI
 	* `--multi-file` or `-mf`: Generate a separate README file for each input file
+	* `--token` or `-t`: Display token usage after generating README
 3. Files: Specify the input files for which you want to generate README files
 
 **Example Usage**
