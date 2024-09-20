@@ -49,6 +49,13 @@ Example 3: Generate a single README file for multiple input files and output to 
 ```bash
 docbot my_file1.txt my_file2.txt my_file3.txt
 ```
+**Video of Tool in Action**
+
+
+https://github.com/user-attachments/assets/e1930888-27c4-4feb-ad80-62691ec9c2cd
+
+
+
 **Note**
 
 * Make sure to install the required dependencies (dotenv, groq) before running the script.
