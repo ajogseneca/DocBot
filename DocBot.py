@@ -29,35 +29,52 @@ def main():
     # Check for version flag before anything else
     if args.version:
         print(f"{TOOL_NAME}, version {TOOL_VERSION}")
-        sys.exit(0)
+        sys.exit(0)  # Exiting successfully after displaying the version
 
     # Check if any files were provided
     if not args.files:
         parser.print_usage()
         print("error: the following arguments are required: file", file=sys.stderr)
-        sys.exit(1)
+        sys.exit(1)  # Exiting with error because no files were provided
 
     # Process each input file
+    for file in args.files:
+        if not os.path.exists(file):
+            print(f"Error: File {file} does not exist.", file=sys.stderr)
+            sys.exit(1)  # Exiting with error if a file doesn't exist
+
     if args.multi_file:
         # If multi-file flag is set, generate separate README for each file, using splitext
         for file in args.files:
-            print(f"Processing file: {file}", file=sys.stderr)
-            output_file = f"{os.path.splitext(file)[0]}_README.md"
-            generate_readme(file, output_file, api_key=args.api_key, token=args.token)
+            try:
+                print(f"Processing file: {file}", file=sys.stderr)
+                output_file = f"{os.path.splitext(file)[0]}_README.md"
+                generate_readme(file, output_file, api_key=args.api_key, token=args.token)
+            except Exception as e:
+                print(f"Error processing file {file}: {e}", file=sys.stderr)
+                sys.exit(1)  # Exiting with error if README generation fails
     else:
         # If multi-file flag is not set, generate a single README file or append to output file
         if args.output == "cli_print":
             for file in args.files:
-                print(f"Processing file: {file}", file=sys.stderr)
-                generate_readme(file, "cli_print", api_key=args.api_key, token=args.token)
+                try:
+                    print(f"Processing file: {file}", file=sys.stderr)
+                    generate_readme(file, "cli_print", api_key=args.api_key, token=args.token)
+                except Exception as e:
+                    print(f"Error processing file {file}: {e}", file=sys.stderr)
+                    sys.exit(1)  # Exiting with error if README generation fails
         else:
             # Append content to the specified output file for multiple files
-            with open(args.output, 'w') as output_file:
-                for file in args.files:
-                    print(f"Processing file: {file}", file=sys.stderr)
-                    # Write or append to the output file
-                    output_file.write(f"# README for {file}\n\n")
-                    generate_readme(file, args.output, api_key=args.api_key, token=args.token)
+            try:
+                with open(args.output, 'w') as output_file:
+                    for file in args.files:
+                        print(f"Processing file: {file}", file=sys.stderr)
+                        # Write or append to the output file
+                        output_file.write(f"# README for {file}\n\n")
+                        generate_readme(file, args.output, api_key=args.api_key, token=args.token)
+            except IOError as e:
+                print(f"Error writing to output file {args.output}: {e}", file=sys.stderr)
+                sys.exit(1)  # Exiting with error if writing to output file fails
 
 if __name__ == "__main__":
     main()
