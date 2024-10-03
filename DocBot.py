@@ -2,6 +2,7 @@ import sys
 import argparse
 from api import generate_readme, AVAILABLE_MODELS
 import os
+import tomli # toml parser
 
 # Version information
 TOOL_NAME = "DocBot"
@@ -27,8 +28,22 @@ def main():
 
     args = parser.parse_args()
 
+    # toml parsing
+    try:
+        with open("docbot-config.toml", "rb") as f:
+            toml_dict = tomli.load(f)
+    except FileNotFoundError: # ignore, and empty dict if the file is not found
+        toml_dict = {}
+    except tomli.TOMLDecodeError: # send error msg if invalid TOML syntax
+        print("Error: Cannot parse TOML, invalid syntax", file=sys.stderr) 
+        sys.exit(1)
+
     # Check for version flag before anything else
     if args.version:
+        print(f"{TOOL_NAME}, version {TOOL_VERSION}")
+        sys.exit(0)
+    # Check for version flag in toml file
+    elif toml_dict.get("version") == True:
         print(f"{TOOL_NAME}, version {TOOL_VERSION}")
         sys.exit(0)
 
