@@ -53,8 +53,16 @@ def main():
         print("error: the following arguments are required: file", file=sys.stderr)
         sys.exit(1)
 
-    # Use specified models or default to all available models
-    models_to_use = args.models if args.models else AVAILABLE_MODELS
+    # Use specified models or any available models
+    models_to_use = None
+    if args.models:
+        models_to_use = args.models
+    # if models are specified in the toml file, use those
+    elif toml_dict.get("models"):
+        models_to_use = toml_dict.get("models")
+    # if no models specified by the user, use the default models
+    else:
+        models_to_use = AVAILABLE_MODELS
 
     # set api_key from toml file if not provided in args
     KEY = args.api_key
