@@ -2,6 +2,7 @@ import sys
 import argparse
 from api import generate_readme, AVAILABLE_MODELS
 import os
+import tomli # toml parser
 
 # Version information
 TOOL_NAME = "DocBot"
@@ -27,8 +28,22 @@ def main():
 
     args = parser.parse_args()
 
+    # toml parsing
+    try:
+        with open(".docbot-config.toml", "rb") as f:
+            toml_dict = tomli.load(f)
+    except FileNotFoundError: # ignore, and empty dict if the file is not found
+        toml_dict = {}
+    except tomli.TOMLDecodeError: # send error msg if invalid TOML syntax
+        print("Error: Cannot parse TOML, invalid syntax", file=sys.stderr) 
+        sys.exit(1)
+
     # Check for version flag before anything else
     if args.version:
+        print(f"{TOOL_NAME}, version {TOOL_VERSION}")
+        sys.exit(0)
+    # Check for version flag in toml file
+    elif toml_dict.get("version") == True:
         print(f"{TOOL_NAME}, version {TOOL_VERSION}")
         sys.exit(0)
 
@@ -38,21 +53,48 @@ def main():
         print("error: the following arguments are required: file", file=sys.stderr)
         sys.exit(1)
 
-    # Use specified models or default to all available models
-    models_to_use = args.models if args.models else AVAILABLE_MODELS
+    # Use specified models or any available models
+    models_to_use = None
+    if args.models:
+        models_to_use = args.models
+    # if models are specified in the toml file, use those
+    elif toml_dict.get("models"):
+        models_to_use = toml_dict.get("models")
+    # if no models specified by the user, use the default models
+    else:
+        models_to_use = AVAILABLE_MODELS
 
+    # set api_key from toml file if not provided in args
+    KEY = args.api_key
+    if not KEY and toml_dict.get("api_key"):
+        # if key is not an arg and is included in toml, set it
+        KEY = toml_dict.get("api_key")
+
+    # set token if specified
+    TOKEN = False
+    if args.token:
+        TOKEN = true
+    # if token is specified in the toml file, set it
+    elif toml_dict.get("token"):
+        TOKEN = toml_dict.get("token")
+        
     # Process each input file
     try:
         if args.output:
             with open(args.output, 'w') as output_file:
                 for file in args.files:
                     print(f"Processing file: {file}", file=sys.stderr)
-                    generate_readme(file, output_file=args.output, models=models_to_use, api_key=args.api_key, token=args.token)
+                    generate_readme(file, output_file=args.output, models=models_to_use, api_key=KEY, token=TOKEN)
+        elif toml_dict.get("output"): # if the toml file has an output specified, use that instead
+            with open(toml_dict.get("output"), 'w') as output_file:
+                for file in args.files:
+                    print(f"Processing file: {file}", file=sys.stderr)
+                    generate_readme(file, output_file=toml_dict.get("output"), models=models_to_use, api_key=KEY, token=TOKEN)
         else:
             # If no output is provided, print to terminal
             for file in args.files:
                 print(f"Processing file: {file}", file=sys.stderr)
-                generate_readme(file, models=models_to_use, api_key=args.api_key, token=args.token)
+                generate_readme(file, models=models_to_use, api_key=KEY, token=TOKEN)
     except Exception as e:
         print(f"An error occurred: {str(e)}", file=sys.stderr)
         sys.exit(1)  # Exiting on any processing error
