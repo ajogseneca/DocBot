@@ -30,7 +30,7 @@ def main():
 
     # toml parsing
     try:
-        with open("docbot-config.toml", "rb") as f:
+        with open(".docbot-config.toml", "rb") as f:
             toml_dict = tomli.load(f)
     except FileNotFoundError: # ignore, and empty dict if the file is not found
         toml_dict = {}
@@ -56,18 +56,29 @@ def main():
     # Use specified models or default to all available models
     models_to_use = args.models if args.models else AVAILABLE_MODELS
 
+    # set api_key from toml file if not provided in args
+    KEY = args.api_key
+    if not KEY and toml_dict.get("api_key"):
+        # if key is not an arg and is included in toml, set it
+        KEY = toml_dict.get("api_key")
+        
     # Process each input file
     try:
         if args.output:
             with open(args.output, 'w') as output_file:
                 for file in args.files:
                     print(f"Processing file: {file}", file=sys.stderr)
-                    generate_readme(file, output_file=args.output, models=models_to_use, api_key=args.api_key, token=args.token)
+                    generate_readme(file, output_file=args.output, models=models_to_use, api_key=KEY, token=args.token)
+        elif toml_dict.get("output"): # if the toml file has an output specified, use that instead
+            with open(toml_dict.get("output"), 'w') as output_file:
+                for file in args.files:
+                    print(f"Processing file: {file}", file=sys.stderr)
+                    generate_readme(file, output_file=toml_dict.get("output"), models=models_to_use, api_key=KEY, token=args.token)
         else:
             # If no output is provided, print to terminal
             for file in args.files:
                 print(f"Processing file: {file}", file=sys.stderr)
-                generate_readme(file, models=models_to_use, api_key=args.api_key, token=args.token)
+                generate_readme(file, models=models_to_use, api_key=KEY, token=args.token)
     except Exception as e:
         print(f"An error occurred: {str(e)}", file=sys.stderr)
         sys.exit(1)  # Exiting on any processing error
