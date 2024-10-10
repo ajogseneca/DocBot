@@ -1,3 +1,4 @@
 .env
 **/__pycache__/
 .docbot-config.toml
+.ruff_cache

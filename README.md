@@ -1,55 +1,57 @@
-# README FILE
-## Content generated using Groq AI 
 
 
-**README Generation Tool**
 
-This tool generates a README description for a given code snippet using the Groq AI API. The tool reads in a source code file, uses the Groq API to generate a README description, and writes the output to a user-specified file or prints it to the CLI.
+# DocBot
 
-**Usage**
+DocBot is a command-line tool designed to automate the generation of README files for projects using AI-powered language models. Leveraging Groq API's advanced language models, DocBot reads source code files and generates comprehensive README documentation based on the content, making it especially useful for developers who want to streamline documentation.
 
-1. Install the required dependencies (dotenv, groq)
-2. Run the script with the following arguments:
-    - `source_file`: The path to the source code file you'd like to generate a README description for.
-    - `generated_file`: The file path (optional) where you'd like to write the generated README description. If not specified, the file will be printed to the CLI. Default is "README.md".
-    - `api_key`: Your Groq API key (optional, can be set as an environment variable).
+## Features
 
-**Environment Variables**
+- **README Generation**: Automatically generate detailed README files based on source code content.
+- **Multi-Model Support**: Choose from a range of Groq models, including `llama3-8b-8192`, `mixtral-8x7b-32768`, and `llava-v1.5-7b-4096-preview`.
+- **Token Usage Display**: Optionally display token usage statistics after README generation.
+- **Configurable Output**: Direct output to a file or print to the terminal.
+- **Config File Support**: Use a TOML configuration file to set default parameters.
 
-* `GROQ_API_KEY`: Your Groq API key. If not set, you'll be prompted to set an API key when running the script.
+## Installation
 
-**Features**
+### Requirements
+- Python 3.6+
+- [Groq API Python Client](https://pypi.org/project/groq/) 
 
-* Supports multiple input files
-* Option to generate a separate README file for each input file
-* Option to output the generated README file to a specified file or to the console
-* Supports API key authentication for Groq AI
-* Option to outpout token usage
+### Installation Steps
 
-**Getting Started**
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/ajogseneca/DocBot.git
+   cd DocBot
 
-1. Run DocBot by running `python docbot <options> <files>`
-2. Options:
-	* `--version` or `-v`: Show the version of DocBot
-	* `--output` or `-o`: Specify the output file (default: stdout)
-	* `--api-key`: Specify the API key for Groq AI
-	* `--token` or `-t`: Display token usage after generating README
-3. Files: Specify the input files for which you want to generate README files
-
-**Example Usage**
-
-Example 1: Generate a single README file for a single input file
-```bash
-docbot --output my_readme.md my_file.txt
+## Usage
+Run DocBot from the command line, providing source files and optional arguments.
 ```
-Example 2: Generate separate README files for multiple input files
-```bash
-docbot --multi-file my_file1.txt my_file2.txt my_file3.txt
+files: List of source files to process for README generation.
+--output <output_file>: Specify the output file for the generated README.
+--models <model1> <model2> ...: List of Groq models to use for generation.
+--api_key <API_KEY>: API key for Groq (optional if specified in .env).
+--token (-t): Display token usage after generating README.
+--config <config_file>: Path to a TOML config file (defaults to .docbot-config.toml).
+--version (-v): Display the current version of DocBot.
 ```
-Example 3: Generate a single README file for multiple input files and output to the console
-```bash
-docbot my_file1.txt my_file2.txt my_file3.txt
-```
+
+## Code Overview
+### api.py
+Handles initialization and interaction with the Groq API for generating README content. Supports multiple models and error handling for file and API operations.
+
+### arg_parser.py
+Defines and parses command-line arguments for DocBot, including options for files, output, models, and config files. Includes support for loading configuration from TOML 
+
+### file_handler.py
+Processes files specified by the user and manages output, directing README content either to a file or the terminal.
+
+### DocBot.py
+Main script that integrates components, processes user inputs, and initiates README generation using Groq API models.
+
+
 **Video of Tool in Action**
 
 
