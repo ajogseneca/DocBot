@@ -18,6 +18,7 @@ All types of contributions are encouraged and valued. See the [Table of Contents
 - [How to use the formatter](#how-to-use-the-formatter)
 - [How to use the Linter](#how-to-use-the-linter)
 - [Linter and Formatter Automation](#linter-and-formatter-automation)
+- [DocBot Testing](#docbot-testing)
 - [I Have a Question](#i-have-a-question)
 - [I Want To Contribute](#i-want-to-contribute)
 - [Reporting Bugs](#reporting-bugs)
@@ -134,6 +135,24 @@ The `.vscode/settings.json` file includes:
   }
 }
 ```
+
+## DocBot Testing
+### Running the Test Framework
+
+To run the test suite, use the following command: `python -m unittest discover -tests`
+
+### Writing Tests
+- Test Structure: Organize tests into separate files within the `tests` directory. Each test file should correspond to a module or feature of the project.
+```your_project/
+├── main.py                     # Main of your tool
+├── tests/                      # Tests directory             
+│   ├── test_main.py            # Tests for the tool
+```
+- Test Naming: Name test methods with descriptive names that explain the behavior being tested example `test_functionality_name`
+- Mocking: Use `unittest.mock` to mock external dependencies example the LLM usage 
+- Assertions: Use assertions like `self.assertEqual()`, `self.assertTrue()`, `self.assertIn()`, etc. to check expected outcomes.
+
+
 
 ## I Have a Question
 
