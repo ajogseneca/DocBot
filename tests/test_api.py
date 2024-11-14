@@ -2,7 +2,7 @@ import unittest
 from io import StringIO
 from unittest.mock import MagicMock, patch
 
-from api import generate_readme  # Importing the function from api.py
+from app.api import generate_readme
 
 
 class TestGenerateReadme(unittest.TestCase):

@@ -1,7 +1,8 @@
 import sys
-from arg_parser import parse_arguments  # Import the argument parsing function
-from file_handler import handle_output  # Import the output handling function
-from api import AVAILABLE_MODELS
+
+from app.api import AVAILABLE_MODELS
+from app.arg_parser import parse_arguments  # Import the argument parsing function
+from app.file_handler import handle_output  # Import the output handling function
 
 
 # Main function to handle the CLI tool logic
