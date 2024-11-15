@@ -1,12 +1,15 @@
+import sys
 import unittest
 from io import StringIO
 from unittest.mock import MagicMock, patch
 
 from app.api import generate_readme
 
+print("sys.path:", sys.path)
+
 
 class TestGenerateReadme(unittest.TestCase):
-    @patch("api.Groq")  # Patched path to GorqAI
+    @patch("app.api.Groq")  # Patched path to GorqAI
     def test_generate_readme_with_mocked_api(self, MockGroq):
         # Mocking the Groq client and chat completions
         mock_client = MagicMock()
@@ -34,7 +37,7 @@ class TestGenerateReadme(unittest.TestCase):
                 self.assertIn("README FILE (Model: llama3-8b-8192)", output)
                 self.assertIn("README content generated", output)
 
-    @patch("api.Groq")
+    @patch("app.api.Groq")
     def test_generate_readme_with_missing_file(self, MockGroq):
         # Mocking the Groq client and chat completions
         mock_client = MagicMock()
