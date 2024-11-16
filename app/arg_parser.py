@@ -30,18 +30,16 @@ def parse_arguments():
     # Parse arguments
     args = parser.parse_args()
 
-    # Load config from TOML file if provided, or use default config file
+    # Skip TOML file loading for testing, or load it based on --config argument
     toml_dict = {}
-    config_file = ".docbot-config.toml"
-
-    try:
-        with open(config_file, "rb") as toml_file:
-            toml_dict = tomli.load(toml_file)
-    except FileNotFoundError:
-        # If no config file is found, we continue with an empty dictionary
-        toml_dict = {}
-    except tomli.TOMLDecodeError:
-        print("Error: Cannot parse TOML, invalid syntax", file=sys.stderr)
-        sys.exit(1)
+    if args.config:
+        try:
+            with open(args.config, "rb") as toml_file:
+                toml_dict = tomli.load(toml_file)
+        except FileNotFoundError:
+            toml_dict = {}
+        except tomli.TOMLDecodeError:
+            print("Error: Cannot parse TOML, invalid syntax", file=sys.stderr)
+            sys.exit(1)
 
     return args, toml_dict
