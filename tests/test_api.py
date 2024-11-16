@@ -9,7 +9,10 @@ print("sys.path:", sys.path)
 
 
 class TestGenerateReadme(unittest.TestCase):
-    @patch("app.api.Groq")  # Patched path to GorqAI
+    @patch("app.api.Groq")  # Patched path to GroqAI
+    @patch.dict(
+        "os.environ", {"GROQ_API_KEY": "mock_api_key"}
+    )  # Mocking the environment variable for API key
     def test_generate_readme_with_mocked_api(self, MockGroq):
         # Mocking the Groq client and chat completions
         mock_client = MagicMock()
@@ -38,6 +41,9 @@ class TestGenerateReadme(unittest.TestCase):
                 self.assertIn("README content generated", output)
 
     @patch("app.api.Groq")
+    @patch.dict(
+        "os.environ", {"GROQ_API_KEY": "mock_api_key"}
+    )  # Mocking the environment variable for API key
     def test_generate_readme_with_missing_file(self, MockGroq):
         # Mocking the Groq client and chat completions
         mock_client = MagicMock()
