@@ -14,11 +14,11 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}  # Set the secret for the API key
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}  # Ensure the secret is set
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3  # Using v3 for stability
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
@@ -30,6 +30,14 @@ jobs:
         pip install python-dotenv
         pip install groq
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Run tests with pytest
+    - name: Lint with flake8
       run: |
-        pytest tests/
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Test with pytest
+      run: |
+        pytest
+    - name: Debug GROQ_API_KEY (for troubleshooting)
+      run: echo "GROQ_API_KEY=$GROQ_API_KEY"  # Display the API key for debugging purposes
+      env:
+        GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}  # Ensure the secret is passed for debugging
