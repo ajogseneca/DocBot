@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }} #Added
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }} #Testing
 
     steps:
     - uses: actions/checkout@v4
