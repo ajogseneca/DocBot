@@ -1,0 +1,11 @@
+flake8
+pytest
+python-dotenv
+groq
+
+[dev]
+flake8
+pytest
+
+[dotenv]
+python-dotenv

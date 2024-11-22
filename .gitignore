@@ -2,3 +2,7 @@
 **/__pycache__/
 .docbot-config.toml
 .ruff_cache
+/dist/
+/build/
+/*.egg-info
+app\DocBot.egg-info
