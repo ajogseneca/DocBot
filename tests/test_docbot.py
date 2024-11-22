@@ -3,8 +3,7 @@ import unittest
 from io import StringIO
 from unittest.mock import patch
 
-from app.DocBot import main, show_version, get_models
-from app.api import AVAILABLE_MODELS
+from app.DocBot import main, show_version
 
 
 class TestShowVersion(unittest.TestCase):
@@ -21,7 +20,7 @@ class TestShowVersion(unittest.TestCase):
 
         # Assert that the output is as expected
         self.assertEqual(captured_output.getvalue().strip(), "DocBot, version 0.3")
-        
+
 
 class TestFileInput(unittest.TestCase):
     @patch("sys.stdout", new_callable=StringIO)
@@ -37,7 +36,8 @@ class TestFileInput(unittest.TestCase):
         self.assertEqual(
             error_message, "error: the following arguments are required: file"
         )
-        
+
+
 class TestInvalidFileInput(unittest.TestCase):
     @patch("sys.stdout", new_callable=StringIO)
     @patch("sys.stderr", new_callable=StringIO)
@@ -47,10 +47,11 @@ class TestInvalidFileInput(unittest.TestCase):
         with self.assertRaises(SystemExit):  # Expecting the program to exit
             main()
 
-        # Check that the error message about missing files is printed to stderr
+        # Check the error message output
         error_message = mock_stderr.getvalue().strip()
         self.assertEqual(
-            error_message, "Error: Source file nonexistentfile.py not found."
+            error_message,
+            "Processing file: nonexistentfile.py\nError: Source file nonexistentfile.py not found.",
         )
 
 
