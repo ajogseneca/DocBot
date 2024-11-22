@@ -1,6 +1,6 @@
 import sys
 
-from app.api import generate_readme
+from ..src.api import generate_readme
 
 
 def handle_output(args, toml_dict, models_to_use, api_key, token):

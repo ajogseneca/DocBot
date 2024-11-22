@@ -1,15 +1,12 @@
-import sys
 import unittest
 from io import StringIO
 from unittest.mock import MagicMock, patch
 
-from app.api import generate_readme
-
-print("sys.path:", sys.path)
+from ..src.api import generate_readme
 
 
 class TestGenerateReadme(unittest.TestCase):
-    @patch("app.api.Groq")  # Patched path to GroqAI
+    @patch("app.docbot_app.src.api.Groq")  # Patched path to GroqAI
     @patch.dict(
         "os.environ", {"GROQ_API_KEY": "mock_api_key"}
     )  # Mocking the environment variable for API key
@@ -40,7 +37,7 @@ class TestGenerateReadme(unittest.TestCase):
                 self.assertIn("README FILE (Model: llama3-8b-8192)", output)
                 self.assertIn("README content generated", output)
 
-    @patch("app.api.Groq")
+    @patch("app.docbot_app.src.api.Groq")
     @patch.dict(
         "os.environ", {"GROQ_API_KEY": "mock_api_key"}
     )  # Mocking the environment variable for API key

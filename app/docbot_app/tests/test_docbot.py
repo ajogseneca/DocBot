@@ -3,7 +3,7 @@ import unittest
 from io import StringIO
 from unittest.mock import patch
 
-from app.DocBot import main, show_version
+from ..src.DocBot import main, show_version
 
 
 class TestShowVersion(unittest.TestCase):

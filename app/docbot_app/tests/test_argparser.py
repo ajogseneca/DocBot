@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from app.arg_parser import (
+from ..src.arg_parser import (
     parse_arguments,
 )
 
