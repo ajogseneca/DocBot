@@ -1,6 +1,6 @@
 import sys
 
-from ..src.api import generate_readme
+from docbot_app.src.api import generate_readme
 
 
 def handle_output(args, toml_dict, models_to_use, api_key, token):

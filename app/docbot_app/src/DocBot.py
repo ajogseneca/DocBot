@@ -1,8 +1,12 @@
 import sys
 
-from ..src.api import AVAILABLE_MODELS
-from ..src.arg_parser import parse_arguments  # Import the argument parsing function
-from ..src.file_handler import handle_output  # Import the output handling function
+from docbot_app.src.api import AVAILABLE_MODELS
+from docbot_app.src.arg_parser import (
+    parse_arguments,  # Import the argument parsing function
+)
+from docbot_app.src.file_handler import (
+    handle_output,  # Import the output handling function
+)
 
 
 # Main function to handle the CLI tool logic
@@ -12,7 +16,7 @@ def main():
 
     # Extract version information
     tool_name = "DocBot"
-    tool_version = "0.3"
+    tool_version = "1.0.1"
 
     # Check for version flag in arguments or TOML and display the version if needed
     if args.version or toml_dict.get("version"):

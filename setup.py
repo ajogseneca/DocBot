@@ -5,11 +5,16 @@ with open("README.md", "r") as f:
     long_description = f.read()
 
 setup(
-    name="DocBot",
-    version="1.0.0",
+    name="docbot_ai",
+    version="1.0.1",
     description="A LLM tool that generates README files for your files. Uses Groq AI",
-    package_dir={"": "app"},
-    packages=find_packages(where="app"),
+    package_dir={"": "app"},  # Map packages starting from "app/"
+    packages=find_packages(where="app"),  # Discover all packages under "app/"
+    entry_points={
+        "console_scripts": [
+            "docbot-ai=docbot_app.src.DocBot:main",  # Path to main function
+        ],
+    },
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/ajogseneca/DocBot",
@@ -18,7 +23,7 @@ setup(
     license="MIT",
     classifiers=[
         "License :: OSI Approved :: MIT License",
-        "Programming Language :: Python :: 3.12.6",
+        "Programming Language :: Python :: 3.12",
         "Operating System :: OS Independent",
     ],
     install_requires=[
@@ -29,11 +34,9 @@ setup(
     ],
     extras_require={
         "dev": [
-            "flake8",  # for linting
-            "pytest",  # for testing
-        ],
-        "dotenv": [
-            "python-dotenv",  # to handle environment variables from .env files
+            "flake8",
+            "pytest",
+            "twine>=4.0.2",
         ],
     },
     python_requires=">=3.10",
